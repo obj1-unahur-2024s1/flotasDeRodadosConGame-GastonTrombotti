@@ -1,7 +1,16 @@
 import wollok.game.*
+import flota.*
 
 program corsasEnElGame {
-	// hacer las inicializaciones necesarias 
+	game.width(14)
+	game.height(8)
+	const cachito = new ChevroletCorsa(color=rojo)
+	
+	game.addVisualCharacter(cachito)
+	keyboard.v().onPressDo{cachito.color(verde)}
+	keyboard.r().onPressDo{cachito.color(rojo)}
+	keyboard.a().onPressDo{cachito.color(azul)}
+	
 	
 	game.start()
 }

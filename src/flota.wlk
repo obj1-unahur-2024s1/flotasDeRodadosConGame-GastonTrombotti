@@ -1,17 +1,37 @@
+import wollok.game.*
+
 class ChevroletCorsa {
-	const property capasidadMax = 4
+	const property capacidadMax = 4
 	const property velocidadMax = 150
 	const property peso = 1300
 	
 	var property color
+	
+	var property position = game.origin()
+	
+	const property recorrido = []
+	
+	method pasoPor(posicion) = recorrido.contains(posicion)
+	
+	method pasoPorFila(fila)= recorrido.any({posicion=>posicion.y()==fila})
+	
+	method recorrioFila(lista_de_numeros) = lista_de_numeros.all({fila=>self.pasoPorFila(fila)})
+	
+	method image()=color.image()
 }
 
 object blanco { }
-object rojo { }
-object azul { }
+object rojo { 
+	method image()="autitorojo.png"
+}
+object azul {
+	method image()="autitoazul.png"
+}
 object beige { }
 object negro { }
-object verde { }
+object verde {
+	method image()="autitoverde.png"
+}
 
 class ReanaulKwid{
 	var tanqueAdicional
@@ -49,7 +69,7 @@ object trafic{
 }
 
 class AutoEspecial{
-	const property capasidadMax 
+	const property capacidadMax 
 	const property velocidadMax 
 	const property peso
 	const property color

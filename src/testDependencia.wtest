@@ -1,0 +1,74 @@
+import flota.*
+import dependencia.*
+import pedidos.*
+//deportes (45 empleados) y cultura (31 empleados).
+
+describe "Test de flotas y dependencias" {
+	const deportes = new Dependencia(empleados=45)
+	const cultura = new Dependencia(empleados=31)
+	
+	const cachito = new ChevroletCorsa(color=rojo)
+	
+	method initialize(){
+		var aux=[cachito, new ChevroletCorsa(color=azul), new ChevroletCorsa(color=verde), new ReanaulKwid(tanqueAdicional = true), new AutoEspecial(capacidadMax = 5, velocidadMax = 160, peso = 1200, color = beige)]
+		aux.forEach({x=>deportes.agregarAFlota(x)})
+		aux=[cachito, new ReanaulKwid(tanqueAdicional = true), new ReanaulKwid(tanqueAdicional = true), new ReanaulKwid(tanqueAdicional = false), trafic ]
+		aux.forEach({x=>cultura.agregarAFlota(x)})	
+	}
+	
+	test "Peso de la flota"{
+	assert.equals(6450,deportes.pesoTotalFlota())
+	assert.equals(10700,cultura.pesoTotalFlota())
+	}
+	
+	test "¿Estan bien equipadas?"{
+		assert.that(deportes.estaBienEquipado())
+		assert.notThat(cultura.estaBienEquipado())
+	}
+	
+	test "Capasidad total color Azul"{
+		assert.equals(7, deportes.capasidadTotalEnColor(azul))
+		assert.equals(10, cultura.capasidadTotalEnColor(azul))
+	}
+	
+	test "Color del rodado mas rapido"{
+		assert.equals(beige, deportes.colorDelRodadoMasRapido())
+		assert.equals(rojo, cultura.colorDelRodadoMasRapido())
+	}
+	
+	test "¿Es grande?"{
+		assert.that(deportes.esGrande())
+		assert.notThat(cultura.esGrande())
+	}
+	
+	test "capacidad faltante"{
+		assert.equals(25, deportes.capacidadFaltante())
+		assert.equals(5, cultura.capacidadFaltante())
+	}
+}
+
+describe "test de pedidos"{
+	const cachito = new ChevroletCorsa(color=rojo)
+	const pedido = new PedidoTranslado(distancia = 960, tiempo = 8, pasajeros = 4, coloresIncompatibles = [azul, negro])
+	
+	test "punto 1" {
+		assert.that(pedido.puedeSerEnAuto(cachito))
+	}
+	
+	test "agregando color rojo incompatible"{
+		pedido.agregarColorIncompatible(rojo)
+		assert.notThat(pedido.puedeSerEnAuto(cachito))
+	}
+	
+	test "agregando 6 pasajeros"{
+		pedido.pasajeros(6)
+		assert.notThat(pedido.puedeSerEnAuto(cachito))
+	}
+	
+	test "cambio tiempo maximo"{
+		pedido.tiempo(6)
+		assert.notThat(pedido.puedeSerEnAuto(cachito))
+	}
+	
+	
+}
