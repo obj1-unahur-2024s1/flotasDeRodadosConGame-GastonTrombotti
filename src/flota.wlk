@@ -18,6 +18,10 @@ class ChevroletCorsa {
 	method recorrioFila(lista_de_numeros) = lista_de_numeros.all({fila=>self.pasoPorFila(fila)})
 	
 	method image()=color.image()
+	
+	method chocar(pared){//Falta los choques
+		if (pared.resistencia()>1)
+	}
 }
 
 object blanco { }

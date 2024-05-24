@@ -1,15 +1,57 @@
 import wollok.game.*
 import flota.*
+import paredess.*
 
 program corsasEnElGame {
 	game.width(14)
 	game.height(8)
-	const cachito = new ChevroletCorsa(color=rojo)
+	const auto1 = new ChevroletCorsa(color=rojo)
+	const auto2 = new ChevroletCorsa(color=azul)
+	const auto3 = new ChevroletCorsa(color=verde)
 	
-	game.addVisualCharacter(cachito)
-	keyboard.v().onPressDo{cachito.color(verde)}
-	keyboard.r().onPressDo{cachito.color(rojo)}
-	keyboard.a().onPressDo{cachito.color(azul)}
+	var activo = [auto1]
+	
+	const paredes = [new Pared(resistencia=0, position=game.center())]
+	
+	paredes.forEach({pared =>
+		game.addVisual(pared)
+		game.whenCollideDo(pared, {personaje=>
+			personaje.chocar(pared)
+		})
+		}
+	)
+	
+	game.addVisual(auto1)
+	keyboard.v().onPressDo{activo.forEach({a=>a.color(verde)})}
+	keyboard.r().onPressDo{activo.forEach({a=>a.color(rojo)})}
+	keyboard.a().onPressDo{activo.forEach({a=>a.color(azul)})}
+	
+	keyboard.up().onPressDo{activo.forEach({a=>a.position(a.position().up(1))})}
+	keyboard.down().onPressDo{activo.forEach({a=>a.position(a.position().down(1))})}
+	keyboard.left().onPressDo{activo.forEach({a=>a.position(a.position().left(1))})}
+	keyboard.right().onPressDo{activo.forEach({a=>a.position(a.position().right(1))})}
+	
+	keyboard.num1().onPressDo{
+		activo.forEach({a=>game.removeVisual(a)})
+		game.addVisual(auto1)
+		activo=[auto1]
+	}
+	keyboard.num2().onPressDo{
+		activo.forEach({a=>game.removeVisual(a)})
+		game.addVisual(auto2)
+		activo=[auto2]
+	}
+	keyboard.num3().onPressDo{
+		activo.forEach({a=>game.removeVisual(a)})
+		game.addVisual(auto3)
+		activo=[auto3]
+	}
+	keyboard.num0().onPressDo{
+		activo.forEach({a=>game.removeVisual(a)})
+		activo=[auto1,auto2,auto3]
+		activo.forEach({a=>game.addVisual(a)})
+	}
+	
 	
 	
 	game.start()
